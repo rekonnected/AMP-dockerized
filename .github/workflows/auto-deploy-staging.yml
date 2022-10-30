@@ -3,18 +3,18 @@ name: "Auto Deploy Staging Branches"
 on:
   push:
     branches:
-      - "staging*"
+      - "buildtest*"
 
 jobs:
   build:
-    if: ${{ startsWith(github.ref, 'refs/heads/staging') }}
-    uses: MitchTalmadge/AMP-dockerized/.github/workflows/build.yml@staging
+    if: ${{ startsWith(github.ref, 'refs/heads/buildtest') }}
+    uses: rekonnected/AMP-dockerized/.github/workflows/build.yml@buildtest
     with:
       for_deploy: true
 
   deploy:
     needs: [build]
-    uses: MitchTalmadge/AMP-dockerized/.github/workflows/deploy-staging.yml@staging
+    uses: rekonnected/AMP-dockerized/.github/workflows/deploy-staging.yml@buildtest
     secrets:
       DOCKERHUB_USERNAME: ${{ secrets.DOCKERHUB_USERNAME }}
       DOCKERHUB_TOKEN: ${{ secrets.DOCKERHUB_TOKEN }}
